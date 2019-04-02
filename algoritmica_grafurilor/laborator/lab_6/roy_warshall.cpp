@@ -1,29 +1,51 @@
 //Algortimul Roy Warshall P1;
 
 #include <iostream>
+#include <fstream>
 using namespace std;
 
-int n,d[100][100],a[100][100];
+int n,a[100][100],d[100][100];
 
-void roy_warshall(){
-  for (int i = 1; i <= n; i++) {
-    for (int j = 1; i <= n; j++) {
+void print_matrice(int x[100][100]){
+  int i, j;
+  for (i = 1; i <= n; i++) {
+      for (j = 1; j <= n; j++) {
+        cout<<x[i][j]<<" ";
+      }
+    cout<<"\n";
+  }
+  cout<<"\n";
+}
+
+void roy_warshall()
+{
+  int i, j, k;
+  for (i = 1; i <= n; i++) {
+    for (j = 1; j <= n; j++) {
       d[i][j] = a[i][j];
     }
   }
-  for (int k = 1; k <= n; k++) {
-    for (int i = 1; i <= n; i++){
-      for (int j = 1; j <= n; j++) {
-        if (d[i][k] + d[k][j] < d[i][j])
-          d[i][j] = d[i][k] + d[k][j];
+  for (k = 1; k <= n; k++) {
+    for (i = 1; i <= n; i++){
+      for (j = 1; j <= n; j++) {
+        if(d[i][k]*d[k][j] > 0)
+          d[i][j]=d[i][k]*d[k][j];
       }
     }
   }
 }
 
 int main()
-{ifstream f("matrice.txt");
-f>>n;
+{
+  int i, j;
+  ifstream f("matrice.txt");
+  f>>n;
+  for(i = 1 ; i <= n ; i++)
+    for(j = 1 ; j <= n ; j++)
+      f>>a[i][j];
+
+  roy_warshall();
+  print_matrice(d);
 
   return 0;
 }
