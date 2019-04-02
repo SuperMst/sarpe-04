@@ -5,8 +5,12 @@ using namespace std;
 int nrc, viz[50], n, a[50][50], tata[50], i, cc[50],
 nr_m, m1[50], m2[50], j;
 
+void viziteaza(int x){
+  cc[x]=nrc;
+}
+
 void df(int x){
-    cout<<x; cc[i]=nrc;
+    viziteaza(x);
     viz[x]=1;
     for(int y=1;y<=n;y++){
         if(a[x][y]>=1 && viz[y]==0){
