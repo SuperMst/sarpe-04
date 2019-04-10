@@ -4,7 +4,7 @@ using namespace std;
 int a[100][100],tata[10000],oo=100000,n;
 bool viz[10000];
 
-ifstream in("5_Arbore_Partial.txt");
+ifstream in("1_Algoritm_krustal.txt");
 
 void Prim(int nod_start)
 {int i,j,p,min,k;
