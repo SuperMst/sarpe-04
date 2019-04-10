@@ -13,7 +13,7 @@ return s;
 
 
 int main()
-{ ifstream f("prob2.txt");
+{ ifstream f("prob4.txt");
 f>>n;
 for(i=1;i<=n;i++)
 for(j=1;j<=n;j++)
