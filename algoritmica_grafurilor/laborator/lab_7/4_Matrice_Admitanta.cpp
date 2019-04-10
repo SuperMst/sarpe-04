@@ -13,7 +13,7 @@ return s;
 
 
 int main()
-{ ifstream f("prob4.txt");
+{ ifstream f("4_Matrice_Admitanta_Txt.txt");
 f>>n;
 for(i=1;i<=n;i++)
 for(j=1;j<=n;j++)
