@@ -1,57 +1,91 @@
-#include <iostream>
-#include <fstream>
+#include    <fstream>
+#include    <iostream>
+#include    <algorithm>
+
 using namespace std;
-int a[100][100],tata[10000],oo=100000,n;
-bool viz[10000];
 
-ifstream in("1_Algoritm_krustal.txt");
+ifstream fin("1_Algoritm_Krustal.txt");
 
-void Prim(int nod_start)
+const int NMax = 400005;
+
+pair <int,int> P[NMax];
+
+int N, M, Total, TT[NMax], k, RG[NMax];
+
+struct Edge
 {
-  int i,j,p,min,k;
-  viz[nod_start]=1; //marcam nodul de start vizitat
-  for(i=1; i<=n; i++){
-    tata[i]=nod_start;
-  }
-  tata[nod_start]=0;// initializam vectorul de tati
-    for(k=1; k<=n-1; k++){
-      min=oo; //minimul este initializat cu infinit
-      p=0;
-      for(i=1; i<=n; i++){
-        if(!viz[i] && a[i][tata[i]]<min)  {
-          min=a[i][tata[i]];
-          p=i;//retinem nodul in variabila p
-        }
-        viz[p]=1; //il marcam vizitat la sfarsit
-      }
-      for(i=1; i<=n; i++){
-        if(!viz[i] && a[i][tata[i]]>a[i][p]){
-          tata[i]=p;
-        }
-      }
-    }
+        int x,y,c;
 
-  cout<<"Arborele de cost minim este: "<<endl;
-  for(int i=1; i<=n; i++){
-    cout<<tata[i]<<" "<<i<<" "<< a[i][tata[i]]<<endl;
-  }
-//cout<<c<<endl;
+} V[NMax];
+
+bool Compare(Edge a, Edge b)
+{
+        return a.c < b.c;
+}
+
+void Read()
+{
+        fin >> N >> M;
+
+        for(int i = 1; i <= M; i++)
+                fin >> V[i].x >> V[i].y >> V[i].c;
+
+        sort(V+1, V+M+1, Compare);
+
+        for(int i = 1; i <= M; i++)
+                cout << V[i].x << " " << V[i].y << " " << V[i].c << "\n";
+}
+
+int Find(int nod)
+{
+        while(TT[nod] != nod)
+                nod = TT[nod];
+        return nod;
+}
+
+void Unite(int x, int y)
+{
+        if(RG[x] < RG[y])
+                TT[x] = y;
+        if(RG[y] < RG[x])
+                TT[y] = x;
+        if(RG[x] == RG[y])
+        {
+                TT[x]=y;
+                RG[y]++;
+        }
+}
+
+void Solve()
+{
+        for(int i=1; i<=M; i++)
+        {
+                //cout << "Incerc " << V[i].x << " cu " << V[i].y << "\n";
+                if(Find(V[i].x) != Find(V[i].y))
+                {
+                        //cout << "Unesc " << V[i].x << " cu " << V[i].y << "\n\n";
+                        Unite(Find(V[i].x), Find(V[i].y));
+                        P[++k].first    =   V[i].x;
+                        P[k].second     =   V[i].y;
+                        Total           +=  V[i].c;
+                }
+        }
 }
 int main()
 {
-  int i,j,C,x;
-  in>>n;
-  for(int i=1; i<=n; i++){
-    for(int j=1; j<=n; j++){
-      if(i!=j){
-        a[i][j]=a[j][i]=oo;
-      }
-    }
-  }
-  while(in>>i>>j>>C){
-    a[i][j]=a[j][i]=C;
-  }
-  cout<<"Nod de start = ";
-  cin>>x;
-  Prim(x);
+        Read();
+
+        for(int i = 1; i <= M; i++)
+        {
+                TT[i]=i;
+                RG[i]=1;
+        }
+
+        Solve();
+
+        cout << Total << "\n";
+        cout << N-1 <<"\n";
+
+
+        return 0;
 }
