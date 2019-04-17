@@ -1,91 +1,54 @@
-#include    <fstream>
-#include    <iostream>
-#include    <algorithm>
-
+#include<iostream>
+#include<fstream>
 using namespace std;
-
-ifstream fin("1_Algoritm_Krustal.txt");
-
-const int NMax = 400005;
-
-pair <int,int> P[NMax];
-
-int N, M, Total, TT[NMax], k, RG[NMax];
-
-struct Edge
+int n,nr_muchii,k=1,S[50],CC[50],m[3][50];
+int aux,cost,x,y,c,poz,z=0;
+void citire()
 {
-        int x,y,c;
+    ifstream f("1_Algoritm_Krustal.txt");
+    f>>n;
+    while(f>>m[0][k]>>m[1][k]>>m[2][k]){
+    cout<<m[0][k]<<" "<<m[1][k]<<" "<<m[2][k]<<endl;
+    z = z+m[2][k];
+    }
+    k++;
 
-} V[NMax];
-
-bool Compare(Edge a, Edge b)
+}
+void sort()
 {
-        return a.c < b.c;
+  for(int i=1;i<k;i++){
+    S[i]=0;
+  }
+  for(int i=1;i<n;i++){
+    CC[i]=i;
+  }
+  cost= 0;
+  poz = 0;
+
+  for(int l=1;l<n-1;l++){
+    k=poz;
+    do{
+      k=k+1;
+      x=m[0][k];
+      y=m[1][k];
+      c=m[2][k];
+    }while(CC[x]=CC[y]);
+    S[k]=1;
+    cost=cost+c;
+    poz=k;
+    aux=CC[y];
+    for(int i=1;i<n;i++){
+      if(CC[i]==aux)
+        CC[i]=CC[x];
+    }
+  }
+
 }
 
-void Read()
+main()
 {
-        fin >> N >> M;
+    citire();
+    sort();
 
-        for(int i = 1; i <= M; i++)
-                fin >> V[i].x >> V[i].y >> V[i].c;
-
-        sort(V+1, V+M+1, Compare);
-
-        for(int i = 1; i <= M; i++)
-                cout << V[i].x << " " << V[i].y << " " << V[i].c << "\n";
-}
-
-int Find(int nod)
-{
-        while(TT[nod] != nod)
-                nod = TT[nod];
-        return nod;
-}
-
-void Unite(int x, int y)
-{
-        if(RG[x] < RG[y])
-                TT[x] = y;
-        if(RG[y] < RG[x])
-                TT[y] = x;
-        if(RG[x] == RG[y])
-        {
-                TT[x]=y;
-                RG[y]++;
-        }
-}
-
-void Solve()
-{
-        for(int i=1; i<=M; i++)
-        {
-                //cout << "Incerc " << V[i].x << " cu " << V[i].y << "\n";
-                if(Find(V[i].x) != Find(V[i].y))
-                {
-                        //cout << "Unesc " << V[i].x << " cu " << V[i].y << "\n\n";
-                        Unite(Find(V[i].x), Find(V[i].y));
-                        P[++k].first    =   V[i].x;
-                        P[k].second     =   V[i].y;
-                        Total           +=  V[i].c;
-                }
-        }
-}
-int main()
-{
-        Read();
-
-        for(int i = 1; i <= M; i++)
-        {
-                TT[i]=i;
-                RG[i]=1;
-        }
-
-        Solve();
-
-        cout << Total << "\n";
-        cout << N-1 <<"\n";
-
-
-        return 0;
+		cout<<endl<<"costul total este "<<z;
 }

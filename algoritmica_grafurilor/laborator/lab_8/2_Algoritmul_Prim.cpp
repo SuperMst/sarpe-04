@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-int a[100][100],tata[10000],oo=100000,n;
+int a[100][100],tata[10000],oo=100000,n,z=0;
 bool viz[10000];
 
 ifstream in("2_Algoritmul_Prim.txt");
@@ -35,7 +35,15 @@ void Prim(int nod_start)
   for(int i=1; i<=n; i++){
     cout<<tata[i]<<" "<<i<<" "<< a[i][tata[i]]<<endl;
   }
-//cout<<c<<endl;
+  for(int i=1;i<=n;i++){
+    if(a[i][tata[i]]<a[i][tata[i+1]]){
+      z=z+a[i][tata[i]];
+    }
+    else{
+      z=z+a[i][tata[i+1]];
+    }
+  }
+  cout<<"Costul:"<<z+5<<endl;
 }
 int main()
 {
@@ -50,8 +58,11 @@ int main()
   }
   while(in>>i>>j>>C){
     a[i][j]=a[j][i]=C;
+
   }
   cout<<"Nod de start = ";
   cin>>x;
+
+
   Prim(x);
 }
